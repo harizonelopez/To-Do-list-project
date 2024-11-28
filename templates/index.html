@@ -1,58 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="css/style_login.css"/>
+    
+    <!-- FontAwesome for icons -->
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
     />
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet"
     />
-    <title>Login Page</title>
-  </head>
-  <body>
     
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_login.css') }}"/>
+    
+    <title>Login Page</title>
+</head>
+<body>
     <div class="container" id="container">
-      <div class="sign-up">
-        <form>
-          <input type="text" id="sign-up-user" placeholder="Username"/>
-          <input type="password" id="sign-up-pass" placeholder="Password"/>
-          <input type="password" id="sign-up-ConPass" placeholder="Confirm Password"/>
-          <button id="Up" type="button">Sign Up</button>
-        </form>
-      </div>
-      <div class="sign-in">
-        <form>
-          <input type="text" id="username" placeholder="Username"/>
-          <input type="password" id="password" placeholder="Password"/>
-          <button >Sign In</button>
-        </form>
-      </div>
-      <div class="toogle-container">
-        <div class="toogle">
-          <div class="toogle-panel toogle-left">
-            <h1>Welcome User!</h1>
-            <p>If you already have an account</p>
-            <button class="hidden" id="login">Sign In</button>
-          </div>
-          <div class="toogle-panel toogle-right">
-            <h1>Hello, User!</h1>
-            <p>If you don't have an account</p>
-            <button class="hidden" id="register">Sign Up</button>
-          </div>
+        <!-- Sign-Up Form -->
+        <div class="sign-up">
+            <form>
+                <input 
+                    type="text" 
+                    id="sign-up-user" 
+                    placeholder="Username" 
+                    required/>
+                <br>
+                <input 
+                    type="password" 
+                    id="sign-up-pass" 
+                    placeholder="Password" 
+                    required/>
+                <br>            
+                <input 
+                    type="password" 
+                    id="sign-up-ConPass" 
+                    placeholder="Confirm Password" 
+                    required/>
+                <br>
+                <button id="Up" type="button">Sign Up</button>
+            </form>
         </div>
-      </div>
+
+        <!-- Sign-In Form -->
+        <div class="sign-in">
+            <form>
+                <input 
+                    type="text" 
+                    id="username" 
+                    placeholder="Username" 
+                    required/>
+                <br>
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Password" 
+                    required/>
+                <br>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Toggle Container -->
+        <div class="toogle-container">
+            <div class="toogle">
+                <div class="toogle-panel toogle-left">
+                    <h1>Welcome User!</h1>
+                    <p>If you already have an account</p>
+                    <button class="hidden" id="login">Sign In</button>
+                </div>
+                <div class="toogle-panel toogle-right">
+                    <h1>Hello, User!</h1>
+                    <p>If you don't have an account</p>
+                    <button class="hidden" id="register">Sign Up</button>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <script src="templates/base.html"></script>
-  </body>
+    <!-- Custom Scripts -->
+    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+</body>
 </html>
