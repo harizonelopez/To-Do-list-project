@@ -74,10 +74,10 @@ const signUpUser = () => {
         return;
     }
 
-    /*const userData = {
+    const userData = {
         username,
         password,
-    };*/
+    };
 
     // Send the form data using the fetch API
     fetch("/api/register", {
