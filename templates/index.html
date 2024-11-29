@@ -4,6 +4,21 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     
+    <!--Flash Messages-->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div id="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
     <!-- FontAwesome for icons -->
     <link
         rel="stylesheet"
@@ -30,7 +45,7 @@
     <div class="container" id="container">
         <!-- Sign-Up Form -->
         <div class="sign-up">
-            <form>
+            <form action="/api/register" method="POST">
                 <input 
                     type="text" 
                     id="sign-up-user" 
@@ -55,7 +70,7 @@
 
         <!-- Sign-In Form -->
         <div class="sign-in">
-            <form>
+            <form action="/api/login" method="POST">
                 <input 
                     type="text" 
                     id="username" 

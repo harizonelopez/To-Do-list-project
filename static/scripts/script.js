@@ -1,5 +1,6 @@
 // API Base URL for Flask
 const apiUrl = "http://127.0.0.1:5000/api"; // Update this if deployed
+// const apiUrl = `${window.location.origin}/api`; // Dynamically set base URL
 
 // Elements
 const container = document.getElementById("container");
@@ -13,11 +14,13 @@ if (registerBtn) {
     });
 }
 
+
 if (loginBtn) {
     loginBtn.addEventListener("click", () => {
         container.classList.remove("active");
     });
 }
+
 
 // Handle sign-in functionality
 const loginForm = document.querySelector(".sign-in form");
@@ -29,34 +32,33 @@ if (loginForm) {
 
         if (username && password) {
             // Fetch the user from Flask API
-            fetch(`${apiUrl}/login`, {
+            fetch("/api/login", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/x-www-form-urlencoded",
                 },
-                body: JSON.stringify({ username, password }),
+                body: new URLSearchParams({ 
+                    username: document.getElementById("username").value, 
+                    password: document.getElementById("password").value, 
+                }),
             })
                 .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Invalid username or password");
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    } else if (!response.ok) {
+                        throw new Error("Invalid username or password")
                     }
-                    return response.json();
-                })
-                .then((user) => {
-                    // Successful login, store userID in localStorage
-                    localStorage.setItem("userID", user.userID);
-                    console.log("Login successful:", user);
-                    window.location.href = "home_page.html"; // Redirect to home page
                 })
                 .catch((error) => {
-                    console.error("Error during login:", error);
-                    alert("Invalid username or password. Please try again."); // Show error
+                    console.error("Login failed:", error);
+                    alert("Invalid username or password. Try again."); // Show error
                 });
         } else {
             alert("Please enter both username and password.");
         }
     });
 }
+
 
 // Handle sign-up functionality
 const signUpUser = () => {
@@ -74,11 +76,6 @@ const signUpUser = () => {
         return;
     }
 
-    const userData = {
-        username,
-        password,
-    };
-
     // Send the form data using the fetch API
     fetch("/api/register", {
         method: "POST",
@@ -94,12 +91,6 @@ const signUpUser = () => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json();
-        })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
             return response.text(); // Flask renders HTML response
         })
         .then((html) => {
@@ -111,7 +102,17 @@ const signUpUser = () => {
         });
 };
 
+
 const signUpBtn = document.getElementById("Up");
 if (signUpBtn) {
     signUpBtn.addEventListener("click", signUpUser);
 }
+
+setTimeout(() => {
+    const flashMessages = document.getElementById('flash-messages');
+    if (flashMessages) {
+        flashMessages.style.transition = "opacity 0.5s ease-out";
+        flashMessages.style.opacity = 0; // Fade out
+        setTimeout(() => flashMessages.remove(), 500); // Remove after fade-out
+    }
+}, 5000);
