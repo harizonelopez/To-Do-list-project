@@ -39,17 +39,21 @@ def login():
 # API endpoint for user registration
 @app.route("/api/register", methods=["POST"])
 def register():
+    print("DEBUG: Request data:", request.form)
     username = request.form.get("username")
     password = request.form.get("password")
 
     if not username or not password:
+        print("DEBUG: Missing username or password")
         return render_template("index.html", error="Username and password are required")
 
     if username in users:
+        print(f"DEBUG: User {username} already exists")
         return render_template("index.html", error="User already exists")
 
     # Register the user
     users[username] = password
+    print(f"DEBUG: User {username} created successfully")
     return render_template("index.html", success="User created successfully! Please log in.")
 
 

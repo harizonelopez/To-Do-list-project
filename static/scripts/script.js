@@ -74,17 +74,21 @@ const signUpUser = () => {
         return;
     }
 
-    const userData = {
+    /*const userData = {
         username,
         password,
-    };
+    };*/
 
-    fetch(`${apiUrl}/register`, {
+    // Send the form data using the fetch API
+    fetch("/api/register", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify(userData),
+        body: new URLSearchParams({
+            username: username,
+            password: password,
+        }),
     })
         .then((response) => {
             if (!response.ok) {
@@ -92,10 +96,14 @@ const signUpUser = () => {
             }
             return response.json();
         })
-        .then((data) => {
-            console.log("User created successfully:", data);
-            alert("User created successfully! Please log in.");
-            container.classList.remove("active"); // Switch back to login view
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text(); // Flask renders HTML response
+        })
+        .then((html) => {
+            document.body.innerHTML = html; // Render the returned HTML
         })
         .catch((error) => {
             console.error("Error:", error);
