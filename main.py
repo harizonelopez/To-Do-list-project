@@ -70,7 +70,7 @@ def login():
     user = User.query.filter_by(username=username).first()
     if user and check_password_hash(user.password, password): 
         # flash(f"Welcome back, {username}!", "success")
-        return redirect(url_for('home_page'))  # Redirect to home page if login is successful
+        return redirect(url_for('home_page'))  
     else:
         flash("Invalid username or password!", "error")
         return redirect(url_for('home')) 
@@ -81,7 +81,7 @@ def login():
 @app.route('/home_page')
 def home_page():
     # if 'userID' not in session:
-        # return redirect(url_for('home'))  # Redirect to login page if not logged in
+        # return redirect(url_for('home'))  
     return render_template("home_page.html")
 
 # Helper to read tasks
