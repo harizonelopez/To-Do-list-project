@@ -1,4 +1,4 @@
-/* Reset some default styles */
+/* Home-page styles */
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +8,7 @@
 /* Body styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #3716a2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,15 +29,15 @@ body {
 /* Heading styles */
 h1 {
     text-align: center;
-    margin-bottom: 30px; /* Increased space between heading and form */
-    color: #333;
+    margin-bottom: 40px; /* Increased space between heading and form */
+    color: #3212d2;
     font-size: 24px; /* Slightly larger font size for heading */
 }
 
 /* Input and Button styles */
 input[type="text"] {
     width: 100%;  /* Full width for better alignment */
-    padding: 12px;
+    padding: 10px;
     font-size: 18px;  /* Slightly larger text */
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -98,6 +98,7 @@ button.deleteBtn {
     cursor: pointer;
     transition: background-color 0.3s ease; /* Smooth hover transition */
 }
+
 button.doneBtn {
     background-color: #45a049;
     color: white;
@@ -111,6 +112,22 @@ button.doneBtn {
 button.deleteBtn:hover {
     background-color: #c0392b;
 }
+
+/* To be used later in the program */
+/*
+nav ul {
+    height: 100%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul li {
+    list-style: none;
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+*/
 
 /* Media Queries for Responsiveness */
 
@@ -126,6 +143,7 @@ button.deleteBtn:hover {
 
     h1 {
         font-size: 22px; /* Adjusted font size for better mobile view */
+        color: violet;
     }
 
     input[type="text"], button {

@@ -1,6 +1,5 @@
 // API Base URL for Flask
-const apiUrl = "http://127.0.0.1:5000/api"; // Update this if deployed
-// const apiUrl = `${window.location.origin}/api`; // Dynamically set base URL
+const apiUrl = "http://127.0.0.1:5000/api"; 
 
 // Elements
 const container = document.getElementById("container");
@@ -13,7 +12,6 @@ if (registerBtn) {
         container.classList.add("active");
     });
 }
-
 
 if (loginBtn) {
     loginBtn.addEventListener("click", () => {

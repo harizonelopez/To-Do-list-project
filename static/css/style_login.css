@@ -1,3 +1,4 @@
+/* User login & sign-up page styles */
 * {
     margin: 0;
     padding: 0;
@@ -33,7 +34,6 @@
     margin: 20px 0;
   }
   
-  
   .container span {
     font-size: 12px;
   }
@@ -44,6 +44,7 @@
     text-decoration: none;
     margin: 15px 0 10px;
   }
+  
   .container button {
     background-color: #61d267;
     color: #fff;
