@@ -17,24 +17,22 @@
                 placeholder="Add a new task here..!">
             <button id="addTaskBtn">Add Task</button>
         </div>
-        <br><hr>
-        <br><hr>
-        <div class="container">
-            <table id="taskTable">
-                <thead>
-                    <tr>
-                        <th id="task-th">Task</th>
-                        <th>Status</th>
-                        <th>Edit</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Tasks will be inserted here dynamically -->
-                </tbody>
-            </table>
-        </div>
+        
+        <table id="taskTable">
+            <thead>
+                <tr>
+                    <th id="task-th">Task</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Tasks will be inserted here dynamically -->
+            </tbody>
+        </table>
     </div>
+
     <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
 </body>
 </html>
