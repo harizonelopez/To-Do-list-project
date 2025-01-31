@@ -63,7 +63,7 @@ def login():
     username = request.form.get("username")
     password = request.form.get("password")
 
-    # print(f"Username: {username}, Password: {password}")--> Used for debugging purpose to make sure the user data info is checked and passed before signing in.
+    # print(f"Username: {username}, Password: {password}")--> Used for debugging purposes.
 
     # Authenticate the user
     user = User.query.filter_by(username=username).first()
