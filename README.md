@@ -5,7 +5,7 @@ This is an Events Organizer application built with Flask-web framework. It allow
 ## Features
 
 - User registration and login
-- Add, update, and delete tasks
+- Add, update, and delete tasks and events
 - Flash messages for user feedback
 - Responsive design
 

@@ -42,13 +42,13 @@ def register():
         flash("Username and password are required", "error")
         return redirect(url_for('home'))
 
-    # check if the user already exists in the database
+    # check if the user account already exists in the database
     existing_user = User.query.filter_by(username=username).first()
     if existing_user:
         flash("The Username already exists", "error")
         return redirect(url_for('home'))
 
-    # Register the user
+    # Register the user to the database
     hashed_password = generate_password_hash(password)
     new_user = User(username=username, password=hashed_password)
     db.session.add(new_user)
@@ -65,7 +65,7 @@ def login():
 
     # print(f"Username: {username}, Password: {password}")--> Used for debugging purposes.
 
-    # Authenticate the user
+    # Authenticate the user credentials
     user = User.query.filter_by(username=username).first()
     if user and check_password_hash(user.password, password): 
         return redirect(url_for('home_page'))  
@@ -77,7 +77,7 @@ def login():
 def home_page():  
     return render_template("home_page.html")
 
-# Helper to read tasks
+# Helper to read tasks and events
 def read_tasks():
     try:
         with open(TASKS_FILE, 'r') as file:
@@ -96,7 +96,7 @@ def get_tasks():
     tasks = read_tasks()
     return jsonify(tasks)
 
-# Route: Add a new task
+# Route: Add a new task 
 @app.route('/api/tasks', methods=['POST'])
 def add_task():
     new_task = request.json
