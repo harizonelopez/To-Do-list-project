@@ -125,7 +125,7 @@ def add_task():
     tasks.append(new_task)
     write_tasks(tasks)
     flash("Task added successfully", "success")
-    # return redirect(url_for('home'))
+    return redirect(url_for('home_page'))
 
 # Route: Update a task status
 @app.route('/api/tasks/<int:task_id>', methods=['PUT'])
