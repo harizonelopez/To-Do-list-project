@@ -49,16 +49,16 @@ button {
     padding: 12px;
     font-size: 18px;
     border: none;
-    background-color: #4CAF50;
+    background-color: #4CAF50; 
     color: white;
     border-radius: 8px;
     cursor: pointer;
-    width: 100%; /* Full-width button for better touch targets */
+    width: 100%;
     box-sizing: border-box;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #245b27;
     transition: background-color 0.3s ease; /* Smooth hover transition */
 }
 
