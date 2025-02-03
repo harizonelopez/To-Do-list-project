@@ -9,14 +9,18 @@
 <body>
     <div class="container">
         <h1><i>My To-Do Task List</i></h1>
-        
-        <div class="input-group">
-            <input 
-                type="text" 
-                id="taskInput" 
-                placeholder="Add a new task here..!">
-            <button id="addTaskBtn">Add Task</button>
-        </div>
+
+        <!-- Form to add a new task -->
+        <form action="{{ url_for('add_task') }}" method="POST">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    name="task_name" 
+                    id="taskInput" 
+                    placeholder="Add a new task here..!" required>
+                <button type="submit" id="addTaskBtn">Add Task</button>
+            </div>
+        </form>
         
         <table id="taskTable">
             <thead>
@@ -29,7 +33,18 @@
             </thead>
             <tbody>
                 <!-- Tasks will be inserted here dynamically -->
-                <!-- Not Working now. Debug later? -->
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.status }}</td>
+                    <td><button>Edit</button></td>
+                    <td>
+                        <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
