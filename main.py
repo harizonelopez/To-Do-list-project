@@ -63,19 +63,18 @@ def login():
     username = request.form.get("username")
     password = request.form.get("password")
 
-    # print(f"Username: {username}, Password: {password}")--> Used for debugging purpose.
-
     # Authenticate the user credentials
     user = User.query.filter_by(username=username).first()
     if user and check_password_hash(user.password, password): 
         return redirect(url_for('home_page'))  
     else:
-        flash("Invalid username or password!", "error")
+        flash("Invalid username or password.", "error")
         return redirect(url_for('home')) 
 
 @app.route('/home_page')
 def home_page():  
-    return render_template("home_page.html")
+    tasks = read_tasks()
+    return render_template("home_page.html", tasks=tasks)
 
 # Helper to read tasks and events
 def read_tasks():
