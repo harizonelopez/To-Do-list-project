@@ -49,7 +49,7 @@ if (loginForm) {
                 })
                 .catch((error) => {
                     console.error("Login failed:", error);
-                    alert("Invalid username or password. Try again."); // Show error
+                    alert("Invalid username or password. Try again."); 
                 });
         } else {
             alert("Please enter both username and password.");

@@ -88,7 +88,7 @@ def read_tasks():
 # Helper to write tasks
 def write_tasks(tasks):
     with open(TASKS_FILE, 'w') as file:
-        json.dump(tasks, file)
+        json.dump(tasks, file, indent=4)
 
 # Route: Fetch all tasks
 @app.route('/api/tasks', methods=['GET'])
@@ -96,7 +96,7 @@ def get_tasks():
     tasks = read_tasks()
     return jsonify(tasks)
 
-# Route: Add a new task 
+"""
 @app.route('/api/tasks', methods=['POST'])
 def add_task():
     new_task = request.json
@@ -105,6 +105,27 @@ def add_task():
     tasks.append(new_task)
     write_tasks(tasks)
     flash("Task added successfully", "success")
+"""
+# Route: Add a new task
+@app.route('/api/tasks', methods=['POST'])
+def add_task():
+    task_name = request.form.get("task_name")
+    # task_description = request.form.get("task_description")
+
+    if not task_name:
+        flash("Task name is required", "error")
+        return redirect(url_for('home'))
+
+    tasks = read_tasks()
+    new_task = {
+        'id': len(tasks) + 1,
+        'name': task_name,
+        'status': 'pending'
+    }
+    tasks.append(new_task)
+    write_tasks(tasks)
+    flash("Task added successfully", "success")
+    # return redirect(url_for('home'))
 
 # Route: Update a task status
 @app.route('/api/tasks/<int:task_id>', methods=['PUT'])
