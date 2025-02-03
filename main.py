@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import json
@@ -111,7 +111,6 @@ def add_task():
 def update_task(task_id):
     tasks = read_tasks()
     for task in tasks:
-        
         if task['id'] == task_id:
             task['status'] = request.json.get('status', task['status'])
             write_tasks(tasks)
