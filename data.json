@@ -1,20 +1,5 @@
 [
     {
-        "id": 4,
-        "name": "Jarvis",
-        "status": "pending"
-    },
-    {
-        "id": 6,
-        "name": "Go to the market",
-        "status": "pending"
-    },
-    {
-        "id": 7,
-        "name": "wza",
-        "status": "pending"
-    },
-    {
         "id": 8,
         "name": "Go to the market",
         "status": "pending"
