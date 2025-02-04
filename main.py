@@ -97,16 +97,6 @@ def get_tasks():
     tasks = read_tasks()
     return jsonify(tasks)
 
-"""
-@app.route('/api/tasks', methods=['POST'])
-def add_task():
-    new_task = request.json
-    tasks = read_tasks()
-    new_task['id'] = len(tasks) + 1 
-    tasks.append(new_task)
-    write_tasks(tasks)
-    flash("Task added successfully", "success")
-"""
 # Route: Add a new task
 @app.route('/api/tasks', methods=['POST'])
 def add_task():
@@ -148,6 +138,7 @@ def delete_task(task_id):
         return redirect(url_for('home_page'))  
     write_tasks(updated_tasks)
     flash("Task deleted successfully", "warning")
+    
     return redirect(url_for('home_page'))  # Redirect to home_page after deletion
 
 if __name__ == "__main__":
