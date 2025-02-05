@@ -3,12 +3,11 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import json
 from werkzeug.security import check_password_hash, generate_password_hash
-# from flask_wtf.csrf import CSRFProtect
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'aladinh00-010montext'
 CORS(app)
-# csrf = CSRFProtect(app)
 
 # Configure SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -138,7 +137,7 @@ def delete_task(task_id):
         return redirect(url_for('home_page'))  
     write_tasks(updated_tasks)
     flash("Task deleted successfully", "warning")
-    
+
     return redirect(url_for('home_page'))  # Redirect to home_page after deletion
 
 if __name__ == "__main__":
