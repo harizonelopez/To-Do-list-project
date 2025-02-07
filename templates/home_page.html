@@ -56,9 +56,9 @@
                 method: 'DELETE',
             }).then(response => {
                 if (response.ok) {
-                    window.location.reload();
+                    document.getElementById(`task-${taskId}`).remove();
                 } else {
-                    alert('Failed to delete task');
+                    // alert('Failed to delete task');
                 }
             });
         }
