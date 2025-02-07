@@ -34,9 +34,14 @@
             <tbody>
                 <!-- Tasks will be inserted here dynamically -->
                 {% for task in tasks %}
-                <tr>
+                <tr id="task-{{ task.id }}">
                     <td>{{ task.name }}</td>
-                    <td>{{ task.status }}</td>
+                    <td>
+                        <select onchange="updateTaskStatus({{ task.id }}, this.value)">
+                            <option value="pending" {% if task.status == 'pending' %} selected {% endif %}>Pending</option>
+                            <option value="completed" {% if task.status == 'completed' %} selected {% endif %}>Completed</option>
+                        </select>
+                    </td>
                     <td><button type="submit" class="btn btn btn-outline-success">Edit</button></td>
                     <td>
                         <form onsubmit="deleteTask(event, {{ task.id }})">
@@ -50,6 +55,22 @@
     </div>
 
     <script>
+        function updateTaskStatus(taskId, status) {
+            fetch(`/api/tasks/${taskId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: status }),
+            }).then(response => {
+                if (response.ok) {
+                    alert('Task updated successfully');
+                } else {
+                    alert('Failed to update task');
+                }
+            });
+        }
+
         function deleteTask(event, taskId) {
             event.preventDefault();
             fetch(`/api/tasks/${taskId}`, {
@@ -58,7 +79,7 @@
                 if (response.ok) {
                     document.getElementById(`task-${taskId}`).remove();
                 } else {
-                    // alert('Failed to delete task');
+                    alert('Failed to delete task');
                 }
             });
         }
