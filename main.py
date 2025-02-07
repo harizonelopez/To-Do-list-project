@@ -109,7 +109,7 @@ def add_task():
     new_task = {
         'id': len(tasks) + 1,
         'name': task_name,
-        'status': 'pending'
+        'status': 'Pending'
     }
     tasks.append(new_task)
     write_tasks(tasks)
@@ -124,8 +124,10 @@ def update_task(task_id):
         if task['id'] == task_id:
             task['status'] = request.json.get('status', task['status'])
             write_tasks(tasks)
-            flash("Task updated successfully", "info")
-    flash("Task not found", "error")
+            # flash("Task updated successfully", "info")
+            return jsonify({"message": "Task updated successfully"}), 200
+    # flash("Task not found", "error")
+    return jsonify({"message": "Task not found"}), 404
 
 # Route: Delete a task
 @app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
@@ -133,12 +135,11 @@ def delete_task(task_id):
     tasks = read_tasks()
     updated_tasks = [task for task in tasks if task['id'] != task_id]
     if len(tasks) == len(updated_tasks):
-        flash("Task not found", "error")
-        return redirect(url_for('home_page'))  
+        # flash("Task not found", "error")
+        return jsonify({"message": "Task not found"}), 404
     write_tasks(updated_tasks)
-    flash("Task deleted successfully", "warning")
-
-    return redirect(url_for('home_page'))  # Redirect to home_page after deletion
+    # flash("Task deleted successfully", "warning")
+    return jsonify({"message": "Task deleted successfully"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

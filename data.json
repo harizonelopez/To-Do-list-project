@@ -1,22 +1,62 @@
 [
     {
         "id": 3,
-        "name": "Go to the market",
-        "status": "pending"
+        "name": "Dance",
+        "status": "completed"
     },
     {
         "id": 4,
-        "name": "Go home",
+        "name": "Ask for permission to go home",
         "status": "pending"
     },
     {
         "id": 5,
-        "name": "Code & Do some debugging ",
+        "name": "Undertake my studies",
         "status": "pending"
     },
     {
-        "id": 5,
-        "name": "Go to the gym",
+        "id": 6,
+        "name": "Revise for the upcoming exam ",
+        "status": "completed"
+    },
+    {
+        "id": 7,
+        "name": "Take a walk",
+        "status": "completed"
+    },
+    {
+        "id": 8,
+        "name": "Pay a visit to my friend ",
         "status": "pending"
+    },
+    {
+        "id": 9,
+        "name": "Opt out of the league",
+        "status": "pending"
+    },
+    {
+        "id": 10,
+        "name": "Place a bet foe the EPL",
+        "status": "pending"
+    },
+    {
+        "id": 11,
+        "name": "Attend a hackathon held at multimedia University of Technology \u2699 with my baddie Cosmas",
+        "status": "pending"
+    },
+    {
+        "id": 12,
+        "name": "All is cool to the Go with my fellow firends",
+        "status": "pending"
+    },
+    {
+        "id": 13,
+        "name": "ooPs that's an error ",
+        "status": "pending"
+    },
+    {
+        "id": 14,
+        "name": "William Dafoe",
+        "status": "Pending"
     }
 ]
