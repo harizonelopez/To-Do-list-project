@@ -3,10 +3,12 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import json
 from werkzeug.security import check_password_hash, generate_password_hash
+import os
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'aladinh00-010montext'
+# app.config['SECRET_KEY'] = 'aladinh00-010montext'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'aladinh00-010montext')
 CORS(app)
 
 # Configure SQLite database
