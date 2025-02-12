@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Secret key (Use environment variable for security)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_secret_key')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'aladinh00-010montext')
 
 # Configure SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
