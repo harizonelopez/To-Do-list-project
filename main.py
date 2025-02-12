@@ -1,147 +1,118 @@
-from flask import Flask, request, render_template, redirect, url_for, flash, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-import json
 from werkzeug.security import check_password_hash, generate_password_hash
 import os
+from flask_wtf.csrf import CSRFProtect
+import jwt
+import datetime
+# from flask_cors import CORS
 
-
+# Initialize Flask app
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = 'aladinh00-010montext'
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'aladinh00-010montext')
 CORS(app)
 
+# Secret key (Use environment variable for security)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_secret_key')
+
 # Configure SQLite database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+csrf = CSRFProtect(app)
 db = SQLAlchemy(app)
 
-# Class model
+# User model
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
-# Initialize the database
+# Task model
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    status = db.Column(db.String(50), default='Pending')
+
+# Initialize database
 with app.app_context():
     db.create_all()
-
-
-# File to store tasks
-TASKS_FILE = 'data.json'
-app.static_folder = 'static'
-
-@app.route("/")
-def home():
-    return render_template("index.html")
 
 # API endpoint for user registration
 @app.route("/api/register", methods=['POST'])
 def register():
-    username = request.form.get("username")
-    password = request.form.get("password")
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
 
     if not username or not password:
-        flash("Username and password are required", "error")
-        return redirect(url_for('home'))
+        return jsonify({"error": "Username and password are required"}), 400
 
-    # check if the user account already exists in the database
-    existing_user = User.query.filter_by(username=username).first()
-    if existing_user:
-        flash("The Username already exists", "error")
-        return redirect(url_for('home'))
+    if User.query.filter_by(username=username).first():
+        return jsonify({"error": "Username already exists"}), 409
 
-    # Register the user to the database
     hashed_password = generate_password_hash(password)
     new_user = User(username=username, password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
 
-    flash("User account created successfully", "success")
-    return redirect(url_for('home'))
+    return jsonify({"message": "User registered successfully"}), 201
 
 # API endpoint for user login
 @app.route('/api/login', methods=['POST'])
 def login():
-    username = request.form.get("username")
-    password = request.form.get("password")
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
 
-    # Authenticate the user credentials
     user = User.query.filter_by(username=username).first()
-    if user and check_password_hash(user.password, password): 
-        return redirect(url_for('home_page'))  
-    else:
-        flash("Invalid username or password.", "error")
-        return redirect(url_for('home')) 
+    if not user or not check_password_hash(user.password, password):
+        return jsonify({"error": "Invalid username or password"}), 401
 
-@app.route('/home_page')
-def home_page():  
-    tasks = read_tasks()
-    return render_template("home_page.html", tasks=tasks)
+    token = jwt.encode({'user_id': user.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)}, 
+                       app.config['SECRET_KEY'], algorithm='HS256')
+    return jsonify({"token": token}), 200
 
-# Helper to read tasks and events
-def read_tasks():
-    try:
-        with open(TASKS_FILE, 'r') as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return []
-
-# Helper to write tasks
-def write_tasks(tasks):
-    with open(TASKS_FILE, 'w') as file:
-        json.dump(tasks, file, indent=4)
-
-# Route: Fetch all tasks
+# Fetch all tasks
 @app.route('/api/tasks', methods=['GET'])
 def get_tasks():
-    tasks = read_tasks()
-    return jsonify(tasks)
+    tasks = Task.query.all()
+    return jsonify([{ "id": task.id, "name": task.name, "status": task.status } for task in tasks])
 
-# Route: Add a new task
+# Add a new task
 @app.route('/api/tasks', methods=['POST'])
 def add_task():
-    task_name = request.form.get("task_name")
-
+    data = request.get_json()
+    task_name = data.get("task_name")
     if not task_name:
-        flash("Task name is required", "error")
-        return redirect(url_for('home'))
+        return jsonify({"error": "Task name is required"}), 400
 
-    tasks = read_tasks()
-    new_task = {
-        'id': len(tasks) + 1,
-        'name': task_name,
-        'status': 'Pending'
-    }
-    tasks.append(new_task)
-    write_tasks(tasks)
-    flash("Task added successfully", "success")
-    return redirect(url_for('home_page'))
+    new_task = Task(name=task_name)
+    db.session.add(new_task)
+    db.session.commit()
+    return jsonify({"message": "Task added successfully"}), 201
 
-# Route: Update a task status
+# Update a task status
 @app.route('/api/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
-    tasks = read_tasks()
-    for task in tasks:
-        if task['id'] == task_id:
-            task['status'] = request.json.get('status', task['status'])
-            write_tasks(tasks)
-            # flash("Task updated successfully", "info")
-            return jsonify({"message": "Task updated successfully"}), 200
-    # flash("Task not found", "error")
-    return jsonify({"message": "Task not found"}), 404
+    data = request.get_json()
+    task = Task.query.get(task_id)
+    if not task:
+        return jsonify({"error": "Task not found"}), 404
 
-# Route: Delete a task
+    task.status = data.get('status', task.status)
+    db.session.commit()
+    return jsonify({"message": "Task updated successfully"})
+
+# Delete a task
 @app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
-    tasks = read_tasks()
-    updated_tasks = [task for task in tasks if task['id'] != task_id]
-    if len(tasks) == len(updated_tasks):
-        # flash("Task not found", "error")
-        return jsonify({"message": "Task not found"}), 404
-    write_tasks(updated_tasks)
-    # flash("Task deleted successfully", "warning")
-    return jsonify({"message": "Task deleted successfully"}), 200
+    task = Task.query.get(task_id)
+    if not task:
+        return jsonify({"error": "Task not found"}), 404
+
+    db.session.delete(task)
+    db.session.commit()
+    return jsonify({"message": "Task deleted successfully"})
 
 if __name__ == "__main__":
     app.run(debug=True)
